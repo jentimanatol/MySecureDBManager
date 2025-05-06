@@ -49,6 +49,6 @@ jobs:
       - name: Upload Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
-          files: MySecureDBManager
+          files: dist/main  # Corrected path
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
