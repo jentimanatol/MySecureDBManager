@@ -25,13 +25,13 @@ jobs:
 
       - name: Build executable with PyInstaller
         run: |
-          pyinstaller --onefile main.py  --icon=app_icon.ico
+          pyinstaller --onefile --icon=app_icon.ico main.py
 
       - name: Upload .exe as artifact
         uses: actions/upload-artifact@v4
         with:
           name: MySecureDBManager
-          path: dist/main.exe  # This is the compiled .exe
+          path: dist/MySecureDBManager.exe  # This is the compiled .exe
 
   release:
     needs: build
