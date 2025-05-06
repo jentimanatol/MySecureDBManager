@@ -1,0 +1,51 @@
+name: Build and Release Python MySQL CLI App
+
+on:
+  push:
+    tags:
+      - 'v*'  # Only run on version tags like v1.0, v1.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mysql-connector-python pyinstaller
+
+      - name: Build executable with PyInstaller
+        run: |
+          pyinstaller --onefile main.py
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BSelvarajLoginsApp
+          path: dist/main
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: BSelvarajLoginsApp
+
+      - name: Upload Release to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          files: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
