@@ -1,28 +1,38 @@
 # 🔐 MySecureDBManager
 
-A sleek and secure command-line database manager built with Python and MySQL. Originally developed for academic excellence at Bunker Hill Community College, now made open-source for everyone to learn, modify, and deploy.
+[![GitHub release](https://img.shields.io/github/v/release/jentimanatol/MySecureDBManager)](https://github.com/jentimanatol/MySecureDBManager/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## ✨ What is MySecureDBManager?
+> Created by **Anatolie Jentimir** — Designed for students, educators, and anyone learning secure MySQL database operations.
 
-**MySecureDBManager** is a Python-based CLI application that allows you to interact with a MySQL database by performing full **CRUD** operations on `User` and `Login` tables. It's ideal for beginner developers learning about SQL, Python database connections, and encryption practices.
+**MySecureDBManager** is a secure and user-friendly command-line tool built in **Python** for managing a MySQL database with full **CRUD** support. Originally developed for an academic project at **Bunker Hill Community College**, it is now an open-source educational resource.
 
-## 🎓 Academic Origin
+---  
 
-This project was born in the classroom of CSC-225 (Intro to Programming - Python) at BHCC and fulfilled the **Database Project-4** requirements with clean, modular code and real-world concepts.
+## 🔽 Download
 
-## 🚀 Features
+📦 Get the latest Windows executable here:  
+➡️ **[Download v3.1 (.exe)](https://github.com/jentimanatol/MySecureDBManager/releases/download/v3.1/MySecureDBManager.exe)**
 
-- 🔒 Encrypted password storage using SHA-256
-- 🧠 Fully interactive command-line interface
-- 🗃️ Two-table relational database:
-  - Users
-  - Logins (linked via foreign key)
-- 🛠️ Full CRUD:
-  - Create, Read, Update, Delete Users and Logins
-- 🔑 Secure MySQL root password prompt
-- 🧩 Modular design for easy upgrades
+🕰️ Looking for source code or earlier versions?  
+🔍 **[Browse all releases](https://github.com/jentimanatol/MySecureDBManager/releases)**
 
-## 📐 Database Schema
+---
+
+## 📦 Features
+
+- 🔒 Encrypted password handling with SHA-256
+- 🧠 Intuitive CLI for database interaction
+- 🗃️ Two relational tables:
+  - `User` table with first name, last name, email, and access level
+  - `Login` table linked by foreign key for secure credentials
+- 🔑 Secure prompt for MySQL root password
+- 🛠️ Full CRUD operations for both Users and Logins
+- 🧩 Modular and beginner-friendly Python code
+
+---
+
+## 🗂️ Database Schema
 
 ### `User` Table
 
@@ -41,64 +51,55 @@ This project was born in the classroom of CSC-225 (Intro to Programming - Python
 | `loginId`    | INT      | Primary key, auto-increment           |
 | `userId`     | INT      | Foreign key to `User.userId`          |
 | `username`   | VARCHAR  | Login username                        |
-| `password`   | VARCHAR  | Encrypted password                    |
+| `password`   | VARCHAR  | Encrypted password (SHA-256)          |
 
-## 💻 Getting Started
+---
 
-### 🧰 Prerequisites
+## 🧪 Perfect For
 
-- Python 3.8+
-- MySQL Server + MySQL Workbench
-- mysql-connector-python
+- Computer science students learning database design
+- Educators teaching Python-MySQL integration
+- Developers prototyping secure login systems
+- Anyone practicing CRUD app development with encryption
 
-### 📦 Installation
+---
+
+## 🚀 How to Use
+
+1. ✅ Install MySQL and Python 3.8+ on your system.
+2. 📥 Download the `.exe` from the [latest release](https://github.com/jentimanatol/MySecureDBManager/releases).
+3. ▶️ Run `MySecureDBManager.exe` or use the Python script directly:
 
 ```bash
 pip install mysql-connector-python
+python MySecureDBManager.py
 ```
 
-### ▶️ Running the App
+4. 🔐 Enter your MySQL root password when prompted.
+5. 🗂️ Begin creating, reading, updating, and deleting records!
 
-```bash
-python main.py
-```
+---
 
-When prompted, enter your MySQL root password to establish the connection and create the database automatically.
+## 🎓 Academic Origin
 
-## 🗂️ Project Structure
+Originally created as the final project for **CSC-225 – Introduction to Programming (Python)**  
+**Bunker Hill Community College** – Spring 2025
 
-```
-MySecureDBManager/
-├── main.py                # Main application
-├── BSelvarajLogins.sql    # Optional SQL script
-├── README.md              # Project documentation
-└── ...
-```
-
-## 🧠 Educational Value
-
-- Learn Python-MySQL interaction
-- Understand stored procedures and encryption
-- Practice secure data handling
-- Expand on a real-world CRUD project
+---
 
 ## 👤 Author
 
-**B. Selvaraj**  
+**Anatolie Jentimir**  
 Computer Science Student  
 Bunker Hill Community College  
-Spring 2025
 
-## 📅 Submission Info
-
-- **Course:** CSC-225 Introduction to Programming
-- **Instructor:** [Instructor Name]
-- **Project Tag:** Final Submission
-- **Submitted:** April 29, 2025
+---
 
 ## 🛡 License
 
-This project is released under the MIT License. Feel free to use, fork, and improve it!
+Licensed under the MIT License.  
+Feel free to fork, use, and improve the code!
 
 ---
+
 > 💬 _"Simple, secure, and built for students — that's MySecureDBManager!"_
