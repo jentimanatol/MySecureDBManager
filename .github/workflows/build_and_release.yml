@@ -3,11 +3,11 @@ name: Build and Release Python MySQL CLI App
 on:
   push:
     tags:
-      - 'v*'  # Triggers on version tags like v1.0
+      - 'v*'
 
 jobs:
   build:
-    runs-on: windows-latest  # Switch to Windows to produce .exe
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -25,13 +25,14 @@ jobs:
 
       - name: Build executable with PyInstaller
         run: |
-          pyinstaller --onefile --icon=app_icon.ico main.py
+           pyinstaller --onefile --icon=./app_icon.ico main.py
+       #   pyinstaller --onefile --icon=app_icon.ico --name=MySecureDBManager main.py
 
       - name: Upload .exe as artifact
         uses: actions/upload-artifact@v4
         with:
           name: MySecureDBManager
-          path: dist/MySecureDBManager.exe  # This is the compiled .exe
+          path: dist/MySecureDBManager.exe
 
   release:
     needs: build
