@@ -1,13 +1,13 @@
-\name: Build and Release MySecureDBManager
+name: Build and Release Python MySQL CLI App
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # Triggers on version tags like v1.0
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest  # Switch to Windows to produce .exe
 
     steps:
       - name: Checkout code
@@ -23,25 +23,26 @@ jobs:
           python -m pip install --upgrade pip
           pip install mysql-connector-python pyinstaller
 
-      - name: Build .exe with PyInstaller
+      - name: Build executable with PyInstaller
         run: |
           pyinstaller --onefile main.py
 
-      - name: Upload artifact
+      - name: Upload .exe as artifact
         uses: actions/upload-artifact@v4
         with:
           name: MySecureDBManager
-          path: dist/main.exe
+          path: dist/main.exe  # This is the compiled .exe
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download artifact
+      - name: Download .exe artifact
         uses: actions/download-artifact@v4
         with:
           name: MySecureDBManager
+          path: .
 
       - name: Upload .exe to GitHub Release
         uses: softprops/action-gh-release@v1
