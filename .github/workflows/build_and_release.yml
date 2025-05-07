@@ -1,0 +1,54 @@
+name: Build and Release Python MySQL CLI App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bcrypt
+          pip install mysql-connector-python pyinstaller
+          pip install mysql-connector-python bcrypt
+
+      - name: Build executable with PyInstaller
+        run: |
+          pyinstaller --onefile --icon=./app_icon.ico MySecureDBManager.py
+
+      - name: Upload .exe as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MySecureDBManager
+          path: dist/MySecureDBManager.exe
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download .exe artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: MySecureDBManager
+          path: .
+
+      - name: Upload .exe to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: MySecureDBManager.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
