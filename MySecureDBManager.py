@@ -5,6 +5,12 @@ import os
 import sys
 from getpass import getpass
 from typing import Dict, List, Optional, Tuple, Union
+import re
+import os
+import sys
+import hashlib
+from getpass import getpass
+from typing import Dict, List, Optional, Tuple, Union
 
 class DatabaseManager:
     def __init__(self):
