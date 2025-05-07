@@ -33,11 +33,33 @@ class DatabaseManager:
             print(f"Error connecting to MySQL server: {err}")
             return False
     
-    def create_database(self, first_initial: str, last_name: str, purpose: str) -> bool:
-        """Create a database with naming convention of first initial + last name + purpose."""
+    def get_all_databases(self) -> List[str]:
+        """Get a list of all databases on the MySQL server."""
+        try:
+            self.cursor.execute("SHOW DATABASES")
+            # Extract database names from results, excluding system databases
+            databases = [db[0] for db in self.cursor if db[0] not in ['information_schema', 'mysql', 'performance_schema', 'sys']]
+            return databases
+        except mysql.connector.Error as err:
+            print(f"Error retrieving databases: {err}")
+            return []
+    
+    def select_database(self, db_name: str) -> bool:
+        """Select an existing database."""
+        try:
+            self.db_name = db_name
+            self.cursor.execute(f"USE {self.db_name}")
+            print(f"Database '{self.db_name}' selected successfully!")
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error selecting database: {err}")
+            return False
+    
+    def create_database(self, purpose: str) -> bool:
+        """Create a database with naming purpose."""
         try:
             # Format database name
-            self.db_name = f"{first_initial}{last_name}{purpose}"
+            self.db_name = f"{purpose}"
             # Sanitize database name (remove special characters)
             self.db_name = re.sub(r'[^\w]', '', self.db_name)
             
@@ -379,22 +401,38 @@ def main():
         print("Failed to connect to MySQL. Exiting...")
         return
     
-    # Get database name components
-    first_initial = input("Enter your first initial: ")
-    last_name = input("Enter your last name: ")
-    purpose = input("Enter database purpose (e.g., 'Logins'): ")
+    # Show available databases or create new one
+    databases = db_manager.get_all_databases()
     
-    # Create database
-    if not db_manager.create_database(first_initial, last_name, purpose):
-        print("Failed to create database. Exiting...")
-        db_manager.close_connection()
-        return
+    print("\n=== Available Databases ===")
+    for i, db in enumerate(databases, 1):
+        print(f"{i}. {db}")
+    print(f"{len(databases) + 1}. Create a new database")
     
-    # Create tables
-    if not db_manager.create_tables():
-        print("Failed to create tables. Exiting...")
-        db_manager.close_connection()
-        return
+    # Let user select a database or create a new one
+    while True:
+        try:
+            choice = int(input(f"\nSelect a database (1-{len(databases) + 1}): "))
+            if 1 <= choice <= len(databases):
+                selected_db = databases[choice - 1]
+                if db_manager.select_database(selected_db):
+                    # Check if tables exist, create them if not
+                    db_manager.create_tables()
+                    break
+            elif choice == len(databases) + 1:
+                # Create new database
+
+                purpose = input("Enter database name: ")
+                
+                if db_manager.create_database( purpose):
+                    db_manager.create_tables()
+                    break
+                else:
+                    print("Failed to create database. Please try again.")
+            else:
+                print(f"Please enter a number between 1 and {len(databases) + 1}")
+        except ValueError:
+            print("Please enter a valid number")
     
     # Main program loop
     while True:
